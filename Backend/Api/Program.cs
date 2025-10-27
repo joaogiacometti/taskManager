@@ -1,3 +1,5 @@
+using Api.Endpoints;
+using Api.Middlewares;
 using Application;
 using Infra;
 using Infra.DataAccess;
@@ -19,6 +21,8 @@ builder.Services
 
 var app = builder.Build();
 
+app.AddProjectEndpoints();
+
 if (app.Environment.IsDevelopment())
 {
     app.Services.MigrateDatabase();
@@ -26,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.MapIdentityApi<IdentityUser>();
 
-app.Run();
+await app.RunAsync();

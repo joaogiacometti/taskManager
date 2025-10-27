@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infra.Mappings;
 
-public class ProjectMap: IEntityTypeConfiguration<Project>
+public class ProjectMap : IEntityTypeConfiguration<Project>
 {
     public void Configure(EntityTypeBuilder<Project> builder)
     {

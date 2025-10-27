@@ -1,13 +1,13 @@
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Task = Domain.Entities.Task;
 
 namespace Infra.Mappings;
 
-public class TaskMap : IEntityTypeConfiguration<Task>
+public class AppTaskMap : IEntityTypeConfiguration<AppTask>
 {
-    public void Configure(EntityTypeBuilder<Task> builder)
+    public void Configure(EntityTypeBuilder<AppTask> builder)
     {
         builder.ToTable("Tasks");
 

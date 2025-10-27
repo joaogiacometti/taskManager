@@ -3,7 +3,7 @@ using TaskStatus = Domain.Enums.TaskStatus;
 
 namespace Domain.Entities;
 
-public class Task
+public class AppTask
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;

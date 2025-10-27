@@ -1,5 +1,7 @@
+using Domain.Repositories;
+using Domain.Repositories.Projects;
 using Infra.DataAccess;
-using Microsoft.AspNetCore.Identity;
+using Infra.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,8 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(connectionString); });
+        
+        services.AddRepositories();
     }
 
     public static void MigrateDatabase(this IServiceProvider serviceProvider)
@@ -20,5 +24,13 @@ public static class DependencyInjection
         using var scope = serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         dbContext.Database.Migrate();
+    }
+
+    private static void AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IProjectReadOnlyRepository, ProjectRepository>();
+        services.AddScoped<IProjectWriteOnlyRepository, ProjectRepository>();
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }
