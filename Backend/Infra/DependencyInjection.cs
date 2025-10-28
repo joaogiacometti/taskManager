@@ -5,6 +5,7 @@ using Infra.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Domain.Repositories.Tasks;
 
 namespace Infra;
 
@@ -15,7 +16,7 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(connectionString); });
-        
+
         services.AddRepositories();
     }
 
@@ -30,7 +31,10 @@ public static class DependencyInjection
     {
         services.AddScoped<IProjectReadOnlyRepository, ProjectRepository>();
         services.AddScoped<IProjectWriteOnlyRepository, ProjectRepository>();
-        
+
+        services.AddScoped<ITaskReadOnlyRepository, TaskRepository>();
+        services.AddScoped<ITaskWriteOnlyRepository, TaskRepository>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

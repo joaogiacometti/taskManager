@@ -21,6 +21,7 @@ internal class ProjectRepository(ApplicationDbContext dbContext) : IProjectReadO
     async Task<Project?> IProjectWriteOnlyRepository.GetById(int id)
     {
         return await dbContext.Projects
+            .Include(p => p.Tasks)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

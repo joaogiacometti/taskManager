@@ -30,4 +30,34 @@
     <data name="DESCRIPTION_MAX_LENGTH" xml:space="preserve">
         <value>O tamanho máximo da descrição é 2000.</value>
     </data>
+    <data name="TITLE_REQUIRED" xml:space="preserve">
+        <value>O título é obrigatório.</value>
+    </data>
+    <data name="TITLE_MAX_LENGTH" xml:space="preserve">
+        <value>O tamanho máximo do título é 200.</value>
+    </data>
+    <data name="RESPONSIBLE_NOT_FOUND" xml:space="preserve">
+        <value>Responsável não encontrado.</value>
+    </data>
+    <data name="TASK_NOT_FOUND" xml:space="preserve">
+        <value>Tarefa não encontrada.</value>
+    </data>
+    <data name="STATUS_INVALID" xml:space="preserve">
+        <value>A opção de status selecionada é inválida.</value>
+    </data>
+    <data name="PRIORITY_INVALID" xml:space="preserve">
+        <value>A opção de prioridade selecionada é inválida.</value>
+    </data>
+    <data name="DEADLINE_PAST" xml:space="preserve">
+        <value>O prazo não pode ser no passado.</value>
+    </data>
+    <data name="STATUS_TRANSITION_INVALID" xml:space="preserve">
+        <value>Transição de status inválida. O fluxo deve ser: Pendente → Em Andamento → Concluída.</value>
+    </data>
+    <data name="TASK_IN_PROGRESS_CANNOT_BE_DELETED" xml:space="preserve">
+        <value>Tarefas em andamento não podem ser excluídas.</value>
+    </data>
+    <data name="PROJECT_HAS_TASKS" xml:space="preserve">
+        <value>O projeto não pode ser excluído pois possui tarefas vinculadas.</value>
+    </data>
 </root>

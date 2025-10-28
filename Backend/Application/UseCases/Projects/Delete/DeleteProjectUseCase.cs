@@ -14,6 +14,9 @@ public class DeleteProjectUseCase(
         var entity = await projectWriteOnlyRepository.GetById(id)
                 ?? throw new NotFoundException(ResourceErrorMessages.PROJECT_NOT_FOUND);
         
+        if (entity.Tasks.Count > 0)
+            throw new ErrorOnValidationException([ResourceErrorMessages.PROJECT_HAS_TASKS]);
+        
         projectWriteOnlyRepository.Delete(entity);
 
         await unitOfWork.Commit();

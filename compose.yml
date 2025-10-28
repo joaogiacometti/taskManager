@@ -15,7 +15,6 @@ services:
         condition: service_healthy
     networks:
       - app
-
   db:
     image: docker.io/postgres
     ports:

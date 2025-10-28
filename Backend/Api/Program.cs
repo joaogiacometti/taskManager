@@ -22,6 +22,7 @@ builder.Services
 var app = builder.Build();
 
 app.AddProjectEndpoints();
+app.AddTaskEndpoints();
 
 if (app.Environment.IsDevelopment())
 {

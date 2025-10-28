@@ -68,5 +68,67 @@ namespace SharedKernel.Resources {
                 return ResourceManager.GetString("DESCRIPTION_MAX_LENGTH", resourceCulture);
             }
         }
+        
+        public static string TITLE_REQUIRED {
+            get {
+                return ResourceManager.GetString("TITLE_REQUIRED", resourceCulture);
+            }
+        }
+        
+        public static string TITLE_MAX_LENGTH {
+            get {
+                return ResourceManager.GetString("TITLE_MAX_LENGTH", resourceCulture);
+            }
+        }
+        
+        public static string RESPONSIBLE_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("RESPONSIBLE_NOT_FOUND", resourceCulture);
+            }
+        }
+
+        public static string TASK_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("TASK_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        public static string PRIORITY_INVALID {
+            get {
+                return ResourceManager.GetString("PRIORITY_INVALID", resourceCulture);
+            }
+        }
+        
+        public static string STATUS_INVALID {
+            get {
+                return ResourceManager.GetString("STATUS_INVALID", resourceCulture);
+            }
+        }
+        
+        public static string DEADLINE_PAST {
+            get {
+                return ResourceManager.GetString("DEADLINE_PAST", resourceCulture);
+            }
+        }
+        
+        public static string STATUS_TRANSITION_INVALID
+        {
+            get
+            {
+                return ResourceManager.GetString("STATUS_TRANSITION_INVALID", resourceCulture);
+            }
+        }
+        
+        public static string TASK_IN_PROGRESS_CANNOT_BE_DELETED {
+            get {
+                return ResourceManager.GetString("TASK_IN_PROGRESS_CANNOT_BE_DELETED", resourceCulture);
+            }
+        }
+        
+        public static string PROJECT_HAS_TASKS {
+            get {
+                return ResourceManager.GetString("PROJECT_HAS_TASKS", resourceCulture);
+            }
+        }
     }
 }
