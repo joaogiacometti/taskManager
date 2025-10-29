@@ -10,6 +10,7 @@ using Application.UseCases.Tasks.GetAll;
 using Application.UseCases.Tasks.Update;
 using Application.UseCases.Tasks.UpdateStatus;
 using Application.UseCases.Tasks.Delete;
+using Application.UseCases.Dashboards.Metrics;
 
 namespace Application;
 
@@ -29,5 +30,7 @@ public static class DependencyInjection
         services.AddScoped<IUpdateTaskUseCase, UpdateTaskUseCase>();
         services.AddScoped<IUpdateTaskStatusUseCase, UpdateTaskStatusUseCase>();
         services.AddScoped<IDeleteTaskUseCase, DeleteTaskUseCase>();
+
+        services.AddScoped<IDashboardMetricsUseCase, DashboardMetricsUseCase>();
     }
 }

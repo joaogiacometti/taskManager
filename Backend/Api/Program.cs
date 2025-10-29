@@ -23,6 +23,7 @@ var app = builder.Build();
 
 app.AddProjectEndpoints();
 app.AddTaskEndpoints();
+app.AddDashboardEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
