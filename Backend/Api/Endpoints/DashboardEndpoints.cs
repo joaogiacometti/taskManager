@@ -8,7 +8,7 @@ public static class DashboardEndpoints
 {
     public static void AddDashboardEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/dashboard")
+        var group = app.MapGroup("/api/dashboard")
             .WithTags("Dashboard")
             .RequireAuthorization();
 

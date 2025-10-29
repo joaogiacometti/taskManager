@@ -13,7 +13,7 @@ public static class ProjectEndpoints
 {
     public static void AddProjectEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/projects")
+        var group = app.MapGroup("/api/projetos")
             .WithTags("Projects")
             .RequireAuthorization();
 
@@ -21,7 +21,7 @@ public static class ProjectEndpoints
         {
             var result = await useCase.Execute(request);
 
-            var uri = $"/projects/{result.Id}";
+            var uri = $"/api/projetos/{result.Id}";
 
             return Results.Created(uri, result);
         })

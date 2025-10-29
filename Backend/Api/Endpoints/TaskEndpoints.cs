@@ -14,7 +14,7 @@ public static class TaskEndpoints
 {
     public static void AddTaskEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/tasks")
+        var group = app.MapGroup("/api/tarefas")
             .WithTags("Tasks")
             .RequireAuthorization();
 
@@ -22,7 +22,7 @@ public static class TaskEndpoints
         {
             var result = await useCase.Execute(request);
 
-            var uri = $"/tasks/{result.Id}";
+            var uri = $"/api/tarefas/{result.Id}";
 
             return Results.Created(uri, result);
         })
