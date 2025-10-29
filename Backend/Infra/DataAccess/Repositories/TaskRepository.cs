@@ -24,11 +24,29 @@ internal class TaskRepository(ApplicationDbContext dbContext) : ITaskReadOnlyRep
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<AppTask>> GetAll()
+    public async Task<List<AppTask>> GetAll(
+        int? projectId = null,
+        Domain.Enums.TaskStatus? status = null,
+        string? responsibleUserId = null,
+        DateTime? deadlineBefore = null)
     {
-        return await dbContext.Tasks
+        var query = dbContext.Tasks
             .AsNoTracking()
-            .ToListAsync();
+            .AsQueryable();
+
+        if (projectId.HasValue)
+            query = query.Where(t => t.ProjectId == projectId.Value);
+
+        if (status.HasValue)
+            query = query.Where(t => t.Status == status.Value);
+
+        if (!string.IsNullOrWhiteSpace(responsibleUserId))
+            query = query.Where(t => t.ResponsibleUserId == responsibleUserId);
+
+        if (deadlineBefore.HasValue)
+            query = query.Where(t => t.Deadline.HasValue && t.Deadline.Value.Date <= deadlineBefore.Value.Date);
+
+        return await query.ToListAsync();
     }
 
     public void Delete(AppTask entity)

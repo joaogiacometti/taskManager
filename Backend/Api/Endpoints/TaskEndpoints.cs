@@ -31,9 +31,14 @@ public static class TaskEndpoints
         .Produces(StatusCodes.Status401Unauthorized)
         .Produces<ResponseError>(StatusCodes.Status404NotFound);
 
-        group.MapGet("", async ([FromServices] IGetTasksUseCase useCase) =>
+        group.MapGet("", async (
+            [FromServices] IGetTasksUseCase useCase,
+            [FromQuery] int? projectId,
+            [FromQuery] Communication.Enums.TaskStatus? status,
+            [FromQuery] string? responsibleUserId,
+            [FromQuery] DateTime? deadlineBefore) =>
         {
-            var result = await useCase.Execute();
+            var result = await useCase.Execute(projectId, status, responsibleUserId, deadlineBefore);
             return result.Count == 0 ? Results.NoContent() : Results.Ok(result);
         })
         .Produces<List<ResponseTask>>()
