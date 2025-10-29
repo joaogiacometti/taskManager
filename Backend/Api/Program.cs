@@ -1,4 +1,5 @@
 using Api.Endpoints;
+using Api.Hubs;
 using Api.Middlewares;
 using Application;
 using Infra;
@@ -9,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSignalR();
+
+builder.Services.AddCors();
 
 builder.Services.AddInfra(builder.Configuration);
 builder.Services.AddApplication();
@@ -32,8 +37,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapIdentityApi<IdentityUser>();
+
+app.MapHub<NotificationHub>("/api/hubs/notification");
 
 await app.RunAsync();
