@@ -1,7 +1,7 @@
 services:
   api:
     build:
-      context: ./Backend
+      context: ./backend
       dockerfile: Api/Dockerfile
       args:
         BUILD_CONFIGURATION: Release
