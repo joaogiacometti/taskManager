@@ -1,4 +1,22 @@
 services:
+  front:
+    container_name: front
+    restart: unless-stopped
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    environment:
+      ENV_VARIABLE: ${ENV_VARIABLE}
+      NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    env_file:
+      - .env
+    volumes:
+      - ./frontend/public:/app/public
+      - ./frontend/app:/app/app
+    ports:
+      - 3000:3000
+    networks:
+      - app
   api:
     build:
       context: ./backend
