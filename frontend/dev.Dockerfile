@@ -17,6 +17,7 @@ COPY lib ./lib
 COPY next.config.ts .
 COPY tsconfig.json .
 COPY postcss.config.mjs .
+COPY proxy.ts .
 
 CMD \
   if [ -f yarn.lock ]; then yarn dev; \

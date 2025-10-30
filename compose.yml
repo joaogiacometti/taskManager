@@ -6,8 +6,8 @@ services:
       context: ./frontend
       dockerfile: dev.Dockerfile
     environment:
-      ENV_VARIABLE: ${ENV_VARIABLE}
-      NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+      API_URL: ${API_URL}
+      NEXT_FRONT_URL: ${NEXT_FRONT_URL}
     env_file:
       - .env
     volumes:

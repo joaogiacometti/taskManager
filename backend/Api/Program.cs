@@ -41,7 +41,8 @@ app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.MapIdentityApi<IdentityUser>();
+app.MapGroup("/api")
+    .MapIdentityApi<IdentityUser>();
 
 app.MapHub<NotificationHub>("/api/hubs/notification");
 
