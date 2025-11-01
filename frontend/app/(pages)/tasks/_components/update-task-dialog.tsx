@@ -27,11 +27,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Pencil } from "lucide-react";
 import { updateTask } from "@/app/actions/tasks";
 import { Task, TaskPriority } from "@/app/types/task";
+import { getUsers } from "@/app/actions/users";
+import { User } from "@/app/types/user";
 
 const updateTaskSchema = z.object({
   title: z.string().min(1, "O título é obrigatório"),
   description: z.string().optional(),
   priority: z.number(),
+  responsibleUserId: z.string().optional(),
   deadline: z
     .string()
     .optional()
@@ -60,8 +63,12 @@ export const UpdateTaskDialog = ({
 }: UpdateTaskDialogProps) => {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
   const [selectedPriority, setSelectedPriority] = useState<number>(
     task.priority
+  );
+  const [selectedUserId, setSelectedUserId] = useState<string>(
+    task.responsibleUserId || ""
   );
 
   const {
@@ -76,6 +83,7 @@ export const UpdateTaskDialog = ({
       title: task.title,
       description: task.description || "",
       priority: task.priority,
+      responsibleUserId: task.responsibleUserId || "",
       deadline: task.deadline
         ? new Date(task.deadline).toISOString().slice(0, 10)
         : "",
@@ -83,22 +91,36 @@ export const UpdateTaskDialog = ({
   });
 
   useEffect(() => {
+    const fetchUsers = async () => {
+      const data = await getUsers();
+      setUsers(data);
+    };
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
     if (open) {
       reset({
         title: task.title,
         description: task.description || "",
         priority: task.priority,
+        responsibleUserId: task.responsibleUserId || "",
         deadline: task.deadline
           ? new Date(task.deadline).toISOString().slice(0, 10)
           : "",
       });
       setSelectedPriority(task.priority);
+      setSelectedUserId(task.responsibleUserId || "");
     }
   }, [open, task, reset]);
 
   useEffect(() => {
     setValue("priority", selectedPriority);
   }, [selectedPriority, setValue]);
+
+  useEffect(() => {
+    setValue("responsibleUserId", selectedUserId || undefined);
+  }, [selectedUserId, setValue]);
 
   const onSubmit = async (data: UpdateTaskFormData) => {
     setIsSubmitting(true);
@@ -110,6 +132,7 @@ export const UpdateTaskDialog = ({
       const result = await updateTask(task.id, {
         ...data,
         deadline: deadlineDateTime,
+        responsibleUserId: data.responsibleUserId || undefined,
       });
 
       if (result.success) {
@@ -194,6 +217,29 @@ export const UpdateTaskDialog = ({
                   <SelectItem value={TaskPriority.Urgent.toString()}>
                     Urgente
                   </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="responsibleUserId">Responsável</Label>
+              <Select
+                value={selectedUserId || "none"}
+                onValueChange={(value) =>
+                  setSelectedUserId(value === "none" ? "" : value)
+                }
+                disabled={isSubmitting}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione um responsável (opcional)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Nenhum</SelectItem>
+                  {users.map((user) => (
+                    <SelectItem key={user.id} value={user.id}>
+                      {user.userName}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

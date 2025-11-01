@@ -15,7 +15,7 @@ public static class TaskEndpoints
     public static void AddTaskEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/api/tarefas")
-            .WithTags("Tasks")
+            .WithTags("Tarefas")
             .RequireAuthorization();
 
         group.MapPost("", async ([FromServices] ICreateTaskUseCase useCase, [FromBody] RequestCreateTask request) =>

@@ -29,6 +29,7 @@ var app = builder.Build();
 app.AddProjectEndpoints();
 app.AddTaskEndpoints();
 app.AddDashboardEndpoints();
+app.AddUserEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
@@ -42,6 +43,7 @@ app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapGroup("/api")
+    .WithTags("Identity")
     .MapIdentityApi<IdentityUser>();
 
 app.MapHub<NotificationHub>("/api/hubs/notification");

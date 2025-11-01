@@ -20,6 +20,8 @@ import {
   taskPriorityLabels,
 } from "@/app/types/task";
 import { toast } from "sonner";
+import { getUsers } from "@/app/actions/users";
+import { User } from "@/app/types/user";
 import { UpdateTaskStatusDialog } from "./update-task-status-dialog";
 import { UpdateTaskDialog } from "./update-task-dialog";
 import { DeleteTaskDialog } from "./delete-task-dialog";
@@ -38,6 +40,7 @@ export const TasksList = ({
   onTaskUpdated,
 }: TasksListProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchTasks = async () => {
@@ -51,6 +54,14 @@ export const TasksList = ({
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const data = await getUsers();
+      setUsers(data);
+    };
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     fetchTasks();
@@ -115,6 +126,12 @@ export const TasksList = ({
     }
   };
 
+  const getUserName = (userId?: string): string => {
+    if (!userId) return "Não atribuído";
+    const user = users.find((u) => u.id === userId);
+    return user?.userName || "Usuário desconhecido";
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16 bg-white rounded-lg shadow-sm">
@@ -146,6 +163,7 @@ export const TasksList = ({
             <TableHead>Título</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Prioridade</TableHead>
+            <TableHead>Responsável</TableHead>
             <TableHead>Prazo</TableHead>
             <TableHead className="text-right">Ações</TableHead>
           </TableRow>
@@ -193,6 +211,15 @@ export const TasksList = ({
                 <Badge className={getPriorityColor(task.priority)}>
                   {taskPriorityLabels[task.priority]}
                 </Badge>
+              </TableCell>
+              <TableCell>
+                <span
+                  className={
+                    task.responsibleUserId ? "text-gray-900" : "text-gray-400"
+                  }
+                >
+                  {getUserName(task.responsibleUserId)}
+                </span>
               </TableCell>
               <TableCell>
                 {task.deadline ? (

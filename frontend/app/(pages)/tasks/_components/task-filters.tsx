@@ -14,6 +14,8 @@ import { TaskFilters as TaskFiltersType } from "@/app/actions/tasks";
 import { taskStatusLabels } from "@/app/types/task";
 import { getProjects } from "@/app/actions/projects";
 import { Project } from "@/app/types/project";
+import { getUsers } from "@/app/actions/users";
+import { User } from "@/app/types/user";
 import { X } from "lucide-react";
 
 interface TaskFiltersProps {
@@ -30,13 +32,19 @@ export const TaskFilters = ({
   onSortChange,
 }: TaskFiltersProps) => {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
       const data = await getProjects();
       setProjects(data);
     };
+    const fetchUsers = async () => {
+      const data = await getUsers();
+      setUsers(data);
+    };
     fetchProjects();
+    fetchUsers();
   }, []);
 
   const handleFilterChange = (key: keyof TaskFiltersType, value: string) => {
@@ -60,7 +68,7 @@ export const TaskFilters = ({
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div className="space-y-2">
           <Label>Projeto</Label>
           <Select
@@ -95,6 +103,28 @@ export const TaskFilters = ({
               {Object.entries(taskStatusLabels).map(([key, label]) => (
                 <SelectItem key={key} value={key}>
                   {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label>Responsável</Label>
+          <Select
+            value={filters.responsibleUserId || "all"}
+            onValueChange={(value) =>
+              handleFilterChange("responsibleUserId", value)
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Todos os responsáveis" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os responsáveis</SelectItem>
+              {users.map((user) => (
+                <SelectItem key={user.id} value={user.id}>
+                  {user.userName}
                 </SelectItem>
               ))}
             </SelectContent>

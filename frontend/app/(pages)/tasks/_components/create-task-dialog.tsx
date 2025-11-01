@@ -30,12 +30,15 @@ import { createTask } from "@/app/actions/tasks";
 import { TaskStatus, TaskPriority } from "@/app/types/task";
 import { getProjects } from "@/app/actions/projects";
 import { Project } from "@/app/types/project";
+import { getUsers } from "@/app/actions/users";
+import { User } from "@/app/types/user";
 
 const createTaskSchema = z.object({
   title: z.string().min(1, "O título é obrigatório"),
   description: z.string().optional(),
   projectId: z.number().min(1, "Selecione um projeto"),
   priority: z.number(),
+  responsibleUserId: z.string().optional(),
   deadline: z
     .string()
     .optional()
@@ -61,10 +64,12 @@ export const CreateTaskDialog = ({ onTaskCreated }: CreateTaskDialogProps) => {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<number>(0);
   const [selectedPriority, setSelectedPriority] = useState<number>(
     TaskPriority.Medium
   );
+  const [selectedUserId, setSelectedUserId] = useState<string>("");
 
   const {
     register,
@@ -84,7 +89,12 @@ export const CreateTaskDialog = ({ onTaskCreated }: CreateTaskDialogProps) => {
       const data = await getProjects();
       setProjects(data);
     };
+    const fetchUsers = async () => {
+      const data = await getUsers();
+      setUsers(data);
+    };
     fetchProjects();
+    fetchUsers();
   }, []);
 
   useEffect(() => {
@@ -94,6 +104,10 @@ export const CreateTaskDialog = ({ onTaskCreated }: CreateTaskDialogProps) => {
   useEffect(() => {
     setValue("priority", selectedPriority);
   }, [selectedPriority, setValue]);
+
+  useEffect(() => {
+    setValue("responsibleUserId", selectedUserId || undefined);
+  }, [selectedUserId, setValue]);
 
   const onSubmit = async (data: CreateTaskFormData) => {
     setIsSubmitting(true);
@@ -106,6 +120,7 @@ export const CreateTaskDialog = ({ onTaskCreated }: CreateTaskDialogProps) => {
         ...data,
         status: TaskStatus.Pending,
         deadline: deadlineDateTime,
+        responsibleUserId: data.responsibleUserId || undefined,
       });
 
       if (result.success) {
@@ -114,6 +129,7 @@ export const CreateTaskDialog = ({ onTaskCreated }: CreateTaskDialogProps) => {
         reset();
         setSelectedProjectId(0);
         setSelectedPriority(TaskPriority.Medium);
+        setSelectedUserId("");
         onTaskCreated?.();
       } else {
         toast.error(result.error || "Erro ao criar tarefa");
@@ -215,6 +231,29 @@ export const CreateTaskDialog = ({ onTaskCreated }: CreateTaskDialogProps) => {
                   <SelectItem value={TaskPriority.Urgent.toString()}>
                     Urgente
                   </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="responsibleUserId">Responsável</Label>
+              <Select
+                value={selectedUserId || "none"}
+                onValueChange={(value) =>
+                  setSelectedUserId(value === "none" ? "" : value)
+                }
+                disabled={isSubmitting}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione um responsável (opcional)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Nenhum</SelectItem>
+                  {users.map((user) => (
+                    <SelectItem key={user.id} value={user.id}>
+                      {user.userName}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
