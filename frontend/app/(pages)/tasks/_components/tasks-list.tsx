@@ -177,9 +177,11 @@ export const TasksList = ({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <div>
-                    <div className="font-medium">{task.title}</div>
+                    <div className="font-medium truncate max-w-sm">
+                      {task.title}
+                    </div>
                     {task.description && (
-                      <div className="text-sm text-gray-500 truncate max-w-md">
+                      <div className="text-sm text-gray-500 truncate max-w-sm">
                         {task.description}
                       </div>
                     )}
@@ -218,7 +220,15 @@ export const TasksList = ({
                     task.responsibleUserId ? "text-gray-900" : "text-gray-400"
                   }
                 >
-                  {getUserName(task.responsibleUserId)}
+                  <span
+                    className={
+                      task.responsibleUserId
+                        ? "text-gray-900 block truncate max-w-xs"
+                        : "text-gray-400 block truncate max-w-xs"
+                    }
+                  >
+                    {getUserName(task.responsibleUserId)}
+                  </span>
                 </span>
               </TableCell>
               <TableCell>

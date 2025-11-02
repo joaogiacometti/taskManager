@@ -66,8 +66,13 @@ export const DeleteTaskDialog = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Deletar Tarefa</AlertDialogTitle>
           <AlertDialogDescription>
-            Tem certeza que deseja deletar a tarefa{" "}
-            <span className="font-semibold">{taskTitle}</span>?
+            <span className="inline-flex items-center space-x-1 truncate max-w-[25rem]">
+              <span>Tem certeza que deseja deletar a tarefa</span>
+              <span className="font-semibold truncate max-w-[12rem]">
+                {taskTitle}
+              </span>
+              <span>?</span>
+            </span>
             <br />
             <br />
             <span className="text-red-600">

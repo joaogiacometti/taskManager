@@ -82,7 +82,9 @@ export const TaskFilters = ({
               <SelectItem value="all">Todos os projetos</SelectItem>
               {projects.map((project) => (
                 <SelectItem key={project.id} value={project.id.toString()}>
-                  {project.name}
+                  <span className="block truncate max-w-[8rem]">
+                    {project.name}
+                  </span>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -124,7 +126,9 @@ export const TaskFilters = ({
               <SelectItem value="all">Todos os responsáveis</SelectItem>
               {users.map((user) => (
                 <SelectItem key={user.id} value={user.id}>
-                  {user.userName}
+                  <span className="block truncate max-w-[18rem]">
+                    {user.userName}
+                  </span>
                 </SelectItem>
               ))}
             </SelectContent>

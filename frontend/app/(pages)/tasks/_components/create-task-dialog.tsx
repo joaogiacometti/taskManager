@@ -196,7 +196,9 @@ export const CreateTaskDialog = ({ onTaskCreated }: CreateTaskDialogProps) => {
                 <SelectContent>
                   {projects.map((project) => (
                     <SelectItem key={project.id} value={project.id.toString()}>
-                      {project.name}
+                      <span className="block truncate max-w-[18rem]">
+                        {project.name}
+                      </span>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -251,7 +253,9 @@ export const CreateTaskDialog = ({ onTaskCreated }: CreateTaskDialogProps) => {
                   <SelectItem value="none">Nenhum</SelectItem>
                   {users.map((user) => (
                     <SelectItem key={user.id} value={user.id}>
-                      {user.userName}
+                      <span className="block truncate max-w-[18rem]">
+                        {user.userName}
+                      </span>
                     </SelectItem>
                   ))}
                 </SelectContent>

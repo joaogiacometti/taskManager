@@ -66,8 +66,10 @@ export const ProjectsList = ({ onRefresh }: ProjectsListProps) => {
             />
           </div>
           <CardHeader>
-            <CardTitle className="text-xl pr-20">{project.name}</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-xl pr-20 truncate">
+              {project.name}
+            </CardTitle>
+            <CardDescription className="truncate">
               {project.description || "Sem descrição"}
             </CardDescription>
           </CardHeader>

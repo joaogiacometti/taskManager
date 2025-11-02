@@ -237,7 +237,9 @@ export const UpdateTaskDialog = ({
                   <SelectItem value="none">Nenhum</SelectItem>
                   {users.map((user) => (
                     <SelectItem key={user.id} value={user.id}>
-                      {user.userName}
+                      <span className="block truncate max-w-[18rem]">
+                        {user.userName}
+                      </span>
                     </SelectItem>
                   ))}
                 </SelectContent>
