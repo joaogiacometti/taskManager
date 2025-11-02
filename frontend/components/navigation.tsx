@@ -15,7 +15,7 @@ export const Navigation = () => {
       icon: BarChart3,
     },
     {
-      href: "/",
+      href: "/projects",
       label: "Projetos",
       icon: FolderKanban,
     },

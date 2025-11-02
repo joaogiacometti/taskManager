@@ -8,7 +8,7 @@ export interface DashboardMetrics {
   completionRatePercentage: number;
 }
 
-export async function getDashboardMetrics(): Promise<DashboardMetrics | null> {
+export async function getDashboardMetrics(): Promise<DashboardMetrics> {
   const res = await fetch("/api/dashboard/metricas", {
     method: "GET",
     credentials: "include",
