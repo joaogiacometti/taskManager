@@ -3,16 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, CheckSquare } from "lucide-react";
+import { CheckSquare, BarChart3, FolderKanban } from "lucide-react";
 
 export const Navigation = () => {
   const pathname = usePathname();
 
   const links = [
     {
+      href: "/dashboard",
+      label: "Dashboard",
+      icon: BarChart3,
+    },
+    {
       href: "/",
       label: "Projetos",
-      icon: LayoutDashboard,
+      icon: FolderKanban,
     },
     {
       href: "/tasks",
@@ -22,7 +27,7 @@ export const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-200 mb-8">
+    <nav className="bg-white border-b border-gray-200">
       <div className="container mx-auto px-4">
         <div className="flex gap-6">
           {links.map((link) => {
