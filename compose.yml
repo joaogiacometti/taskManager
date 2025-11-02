@@ -5,11 +5,6 @@ services:
     build:
       context: ./frontend
       dockerfile: dev.Dockerfile
-    environment:
-      API_URL: ${API_URL}
-      NEXT_FRONT_URL: ${NEXT_FRONT_URL}
-    env_file:
-      - .env
     volumes:
       - ./frontend/public:/app/public
       - ./frontend/app:/app/app
