@@ -1,4 +1,5 @@
 import { Task, TaskStatus } from "../types/task";
+import z from "zod";
 
 export interface TaskFilters {
   projectId?: number;
@@ -53,6 +54,21 @@ export async function createTask(data: {
   responsibleUserId?: string;
   deadline?: string;
 }): Promise<{ success: boolean; error?: string; task?: Task }> {
+  const createTaskSchema = z.object({
+    title: z.string().max(200, "Título deve ter no máximo 200 caracteres."),
+    description: z
+      .string()
+      .max(2000, "Descrição deve ter no máximo 2000 caracteres.")
+      .optional()
+      .nullable(),
+  });
+
+  const parsed = createTaskSchema.safeParse(data);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    const message = first?.message || "Dados inválidos";
+    return { success: false, error: message };
+  }
   const res = await fetch("/api/tarefas", {
     method: "POST",
     credentials: "include",
@@ -92,6 +108,24 @@ export async function updateTask(
     deadline?: string;
   }
 ): Promise<{ success: boolean; error?: string }> {
+  const updateTaskSchema = z.object({
+    title: z.string().max(200, "Título deve ter no máximo 200 caracteres."),
+    description: z
+      .string()
+      .max(2000, "Descrição deve ter no máximo 2000 caracteres.")
+      .optional()
+      .nullable(),
+    priority: z.number(),
+    responsibleUserId: z.string().optional().nullable(),
+    deadline: z.string().optional().nullable(),
+  });
+
+  const parsed = updateTaskSchema.safeParse(data);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    const message = first?.message || "Dados inválidos";
+    return { success: false, error: message };
+  }
   const res = await fetch(`/api/tarefas/${id}`, {
     method: "PUT",
     credentials: "include",

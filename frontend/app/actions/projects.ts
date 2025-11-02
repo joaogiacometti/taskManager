@@ -1,4 +1,5 @@
 import { Project } from "../types/project";
+import z from "zod";
 
 export async function getProjects(): Promise<Project[]> {
   const res = await fetch("/api/projetos", {
@@ -23,6 +24,21 @@ export async function createProject(data: {
   name: string;
   description?: string;
 }): Promise<{ success: boolean; error?: string; project?: Project }> {
+  const createProjectSchema = z.object({
+    name: z.string().max(200, "Nome deve ter no máximo 200 caracteres."),
+    description: z
+      .string()
+      .max(2000, "Descrição deve ter no máximo 2000 caracteres.")
+      .optional()
+      .nullable(),
+  });
+
+  const parsed = createProjectSchema.safeParse(data);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    const message = first?.message || "Dados inválidos";
+    return { success: false, error: message };
+  }
   const res = await fetch("/api/projetos", {
     method: "POST",
     credentials: "include",
@@ -54,6 +70,21 @@ export async function updateProject(
     description?: string;
   }
 ): Promise<{ success: boolean; error?: string }> {
+  const updateProjectSchema = z.object({
+    name: z.string().max(200, "Nome deve ter no máximo 200 caracteres."),
+    description: z
+      .string()
+      .max(2000, "Descrição deve ter no máximo 2000 caracteres.")
+      .optional()
+      .nullable(),
+  });
+
+  const parsed = updateProjectSchema.safeParse(data);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    const message = first?.message || "Dados inválidos";
+    return { success: false, error: message };
+  }
   const res = await fetch(`/api/projetos/${id}`, {
     method: "PUT",
     credentials: "include",
