@@ -7,6 +7,11 @@ using Infra.DataAccess;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+builder.Services.AddSingleton<ILogger>(x =>
+    x.GetRequiredService<ILoggerFactory>().CreateLogger("TaskManagerLogger"));
 
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();

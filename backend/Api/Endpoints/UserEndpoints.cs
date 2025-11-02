@@ -1,6 +1,7 @@
 using Communication.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Endpoints;
@@ -13,7 +14,7 @@ public static class UserEndpoints
             .WithTags("Usuários")
             .RequireAuthorization();
 
-        group.MapGet("", async ([FromServices] UserManager<IdentityUser> userManager) =>
+        group.MapGet("", async ([FromServices] UserManager<IdentityUser> userManager, [FromServices] ILogger logger) =>
         {
             var users = await userManager.Users
                 .Select(u => new ResponseUser
@@ -22,6 +23,8 @@ public static class UserEndpoints
                     UserName = u.UserName
                 })
                 .ToListAsync();
+
+            logger.LogInformation("Returned {Count} users", users.Count);
 
             return users.Count == 0 ? Results.NoContent() : Results.Ok(users);
         })
